@@ -56,7 +56,7 @@ class ProductoController extends Controller
     }
 
    
-    public function update(Request $request, Producto $producto)
+    public function update(ProductoStoreRequest $request, Producto $producto)
     {
         $data = $request->all();
         if ($request->has('image')) {
