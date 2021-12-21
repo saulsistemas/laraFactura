@@ -10,6 +10,9 @@
 </head>
 <body>
     <div class="container">
+        @include('layouts.menu')
+    </div>
+    <div class="container">
         @yield('contenido')
     </div>
    

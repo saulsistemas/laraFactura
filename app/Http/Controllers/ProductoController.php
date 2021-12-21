@@ -2,84 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductoStoreRequest;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+  
+    public function index(Request $request)
     {
-        //
+        $texto=trim($request->get('texto'));
+        #$productos = Producto::latest('id')->paginate(4);
+        $productos = Producto::where('nombre','LIKE','%'.$texto .'%')
+                    ->orWhere('precio','LIKE','%'.$texto .'%')
+                    ->latest('id')
+                    ->paginate(4);
+        return view('admin.productos.index',compact('productos','texto'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  
     public function create()
     {
-        //
+        #$producto = New Producto();
+        return view('admin.productos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+   
+    public function store(ProductoStoreRequest $request)
     {
-        //
+        $data = $request->all();
+        if ($request->has('image')) {
+            $image_path = $request->file('image')->store('medias');
+            $data['image_url'] = $image_path;
+        }
+        Producto::create($data);
+        return redirect()->route('admin.productos.index')->with([
+            'status'=>'success',
+            'color'=>'green',
+            'message'=>'Producto creado corectamete']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show(Producto $producto)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit(Producto $producto)
     {
-        //
+        return view('admin.productos.create',compact('producto'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, Producto $producto)
     {
-        //
+        $data = $request->all();
+        if ($request->has('image')) {
+            Storage::delete($producto->image_url);
+            $image_path = $request->file('image')->store('medias');
+            $data['image_url'] = $image_path;
+        }
+        $producto->fill($data);  
+        $producto->save(); 
+        return redirect()->route('admin.productos.index')->with([
+            'status'=>'success',
+            'color'=>'green',
+            'message'=>'Producto actualizado corectamete']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
+  
     public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect()->route('admin.productos.index')->with([
+            'status'=>'success',
+            'color'=>'red',
+            'message'=>'Producto Eliminado corectamete']);
     }
 }

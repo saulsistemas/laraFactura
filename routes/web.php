@@ -8,4 +8,4 @@ Route::get('/', function () {
     return view('admin.productos.index');
 });
 
-Route::resource('productos', ProductoController::class);
+Route::resource('productos', ProductoController::class)->names('admin.productos');

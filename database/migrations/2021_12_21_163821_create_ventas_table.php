@@ -15,6 +15,9 @@ class CreateVentasTable extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
+            $table->enum('serie',['A','B','C'])->default('A');
+            $table->string('estado',8)->default('new');
+            $table->foreignId('cliente_id')->constrained('clientes');
             $table->timestamps();
         });
     }
