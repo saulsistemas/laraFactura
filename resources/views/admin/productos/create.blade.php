@@ -29,7 +29,12 @@
         <div class="mb-3">
             <label class="form-label">Imagen</label>
             @if(isset($producto))
-                <img class="w-20" src="{{ asset("$producto->image_url") }}" /> 
+                {{-- <img class="w-20" src="{{ asset("$producto->image_url") }}" />  --}}
+                @if($producto->image_url)
+                    <img src="{{ asset($producto->image_url)}}" class="img-circle" width="40px" height="40px">
+                @else 
+                    <img src="https://cdn.pixabay.com/photo/2021/11/08/14/17/europe-6779227_960_720.jpg" class="img-circle" width="40px" height="40px">
+                @endif 
             @endif
             <input id="image" name="image" type="file" class="sr-only">
                 @error('image')

@@ -75,6 +75,7 @@ class ProductoController extends Controller
   
     public function destroy(Producto $producto)
     {
+        Storage::delete($producto->image_url);
         $producto->delete();
         return redirect()->route('admin.productos.index')->with([
             'status'=>'success',
