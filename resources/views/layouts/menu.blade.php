@@ -9,6 +9,6 @@
       <a class="nav-link {{request()->routeIs('admin.clientes.*')? 'active' : ''}}" href="{{ route('admin.clientes.index') }}">Clientes</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      <a class="nav-link {{request()->routeIs('admin.ventas.*')? 'active' : ''}}" href="{{ route('admin.ventas.index') }}">Ventas</a>
     </li>
 </ul>

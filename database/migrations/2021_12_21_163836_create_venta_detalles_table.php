@@ -16,7 +16,7 @@ class CreateVentaDetallesTable extends Migration
         Schema::create('venta_detalles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('producto_id')->constrained('productos');
-            $table->foreignId('venta_id')->constrained('ventas');
+            $table->foreignId('venta_id')->constrained('ventas')->onDelete('cascade');
             $table->double('precio',12,2);
             $table->integer('cantidad')->default(1);
             $table->double('total_producto',12,2);
